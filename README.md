@@ -1,2 +1,1 @@
-# linea-culture-szn
-Linea Culture SZN
+# Linea Culture SZN
