@@ -2,6 +2,7 @@
 
 ## Установка
 ```git clone https://github.com/latyshdev/linea-culture-szn.git```
+```npm install```
 
 ## Требования
 OS: Windows
@@ -16,6 +17,9 @@ Node: https://nodejs.org/en/download/package-manager
     "inquirer": "^8.0.0",
     "mongodb": "^4.17.1"
 ```
+
+## Запуск
+```node index.js```
 
 ## Donate
 EVM: 0x99984bBFF08C169796E1B070CFfCb3795fAf9999
