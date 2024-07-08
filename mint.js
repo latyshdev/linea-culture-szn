@@ -19,7 +19,7 @@ exports.mint = {
     3: false,
     4: false,
     5: false,
-    6: mint6,
+    6: mintNFTS2ME,
   }
 } 
 
@@ -29,7 +29,7 @@ exports.mint = {
 // Минты
 // Satoshi Universe 
 // NFTS2ME
-async function mint6(BOT, contractAddress){
+async function mintNFTS2ME(BOT, contractAddress){
   const ABI = `[{"inputs":[],"name":"mintEfficientN2M_001Z5BWH","outputs":[],"stateMutability":"payable","type":"function"}, {"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]`;
   const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
 
