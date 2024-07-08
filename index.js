@@ -147,7 +147,6 @@ const questions = [
         await waitGwei(BOT, "LINEA");
 
         let msg = ``;
-        let walletMsg = ``;
 
         // Делаем минт
         let tx = await  mint.mintFunctions[choice](BOT, mint[choice].mint);
