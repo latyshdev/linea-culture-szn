@@ -1,0 +1,36 @@
+{
+  "PROJECT_NAME": "LINEA",
+  "CHAIN_ID": 59144,
+
+  "_PAUSE_BETWEEN_ACCOUNTS": "Пауза в секундах. [60, 120]",
+  "PAUSE_BETWEEN_ACCOUNTS": [60, 120],
+
+  "_PAUSE_SEC_BETWEEN_TXN": "Пауза в секундах между транзакциями в рамках одного кошелька",
+  "PAUSE_SEC_BETWEEN_TXN": [10, 15],
+
+  "_SHUFFLE_PK": "Миксовать кошельки",
+  "SHUFFLE_PK": true,
+
+  "_PROJECT_GAS_DECIMALS": "Количество знаков после запятой. 0: целое, -1: 0.1, -2: 0.11, -3: 0.111",
+  "PROJECT_GAS_DECIMALS": "-3",
+
+  "_MAX_GWEI_PROJECT": "Максимальный gwei в Linea. С плавающей точкой. 0.075",
+  "MAX_GWEI_PROJECT": 0.075,
+
+  "_GAS_AMOUNT_MULTIPLICATOR": "Увеличенное количество газа. Rabby Wallet ставит 1.5.",
+  "GAS_AMOUNT_MULTIPLICATOR": 1.5,
+
+  "NATIVE_TOKEN": "ETH",
+
+  "_MAX_GWEI_ETHEREUM": "Максимальный gwei в Ethereum. Целое число или false. 20, false",
+  "MAX_GWEI_ETHEREUM": 20,
+
+
+  "EXPLORER": "https://lineascan.build/",
+  "RPC": "https://rpc.linea.build",
+  "RPC_ETHEREUM": "https://eth.llamarpc.com",
+
+  "_PROXY_TYPE": "Тип прокси. SOCKS5 или HTTP",
+  "PROXY_TYPE": "SOCKS5"
+
+}

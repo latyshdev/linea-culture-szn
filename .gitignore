@@ -1,0 +1,10 @@
+privates.txt
+proxy.txt
+*.txt
+/LOGS/*
+config.json
+node_modules
+*.json
+
+!package.json
+!.json_
