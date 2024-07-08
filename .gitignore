@@ -9,3 +9,4 @@ node_modules
 !package.json
 !.json_
 !_CONFIGS/chalkColors.json
+!_LOGS
