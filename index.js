@@ -97,7 +97,8 @@ const questions = [
     if (!configExist) {
       logError(`Конфиг linea.json не существует. Копирую конфиг по умолчанию.`);
       logWarn(`Заполните linea.json`);
-      fs.copyFileSync('./_CONFIGS/linea.json_', './_CONFIGS/linea.json')
+      fs.copyFileSync('./_CONFIGS/linea.json_', './_CONFIGS/linea.json');
+      return false;
     };
 
     const CONFIG = require('./_CONFIGS/linea.json');
@@ -107,8 +108,16 @@ const questions = [
     }
 
     // Стартуем
-    for await (let [i, privateKey] of (CONFIG.SHUFFLE_PK) ? shuffle(privateKeys).entries() : privateKeys.entries()) {
+    // const privateKeysOld = JSON.parse(JSON.stringify(privateKeys));
+
+    for await (let [i, privateKey] of (CONFIG.SHUFFLE_PK) ? shuffle(JSON.parse(JSON.stringify(privateKeys))).entries() : privateKeys.entries()) {
       console.log();
+
+      // console.log(privateKeys);
+      let k = privateKeys.indexOf(privateKey);
+      // console.log(k, i, proxyList[k], privateKey);
+      // console.log(privateKeysOld, privateKeys)
+      // continue;
       const BOT = {};
       BOT.configs = {"LINEA": CONFIG};
       BOT.tx_params = {"LINEA": {}};
@@ -117,20 +126,20 @@ const questions = [
 
       BOT.providers["LINEA"] = await createProvider({
         RPC: CONFIG.RPC,
-        proxy: evaluateProxy(proxyList[i], CONFIG.PROXY_TYPE)
+        proxy: evaluateProxy(proxyList[k], CONFIG.PROXY_TYPE)
       });
 
       // Создаем провайдера ETHEREUM
       if (CONFIG.MAX_GWEI_ETHEREUM) {
         BOT.providers["ETHEREUM"] = await createProvider({
           RPC: CONFIG.RPC_ETHEREUM,
-          proxy: evaluateProxy(proxyList[i], CONFIG.PROXY_TYPE)
+          proxy: evaluateProxy(proxyList[k], CONFIG.PROXY_TYPE)
         });
       };
 
       // Создаем кошелек
       BOT.wallets = {};
-      BOT.wallets["LINEA"] = await getWallet(privateKeys[i], BOT.providers["LINEA"]);
+      BOT.wallets["LINEA"] = await getWallet(privateKeys[k], BOT.providers["LINEA"]);
 
       // console.log(BOT);
 
