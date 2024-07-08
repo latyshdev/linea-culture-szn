@@ -2,6 +2,7 @@
 
 ## Установка
 ```git clone https://github.com/latyshdev/linea-culture-szn.git```
+
 ```npm install```
 
 ## Требования
