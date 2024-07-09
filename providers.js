@@ -3,7 +3,7 @@ async function createProvider({RPC, proxy}) {
   const { JsonRpcProvider, FetchRequest } = require('ethers');
 
   try  {
-    console.log("используем прокси", proxy);
+    // console.log("используем прокси", proxy);
     // console.log("используем RPC", RPC);
     if (proxy) FetchRequest.registerGetUrl(getUrl);
     let provider =  new JsonRpcProvider(RPC);

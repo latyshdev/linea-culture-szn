@@ -158,7 +158,7 @@ const questions = [
         let msg = ``;
 
         // Делаем минт
-        let tx = await  mint.mintFunctions[choice](BOT, mint[choice].mint);
+        let tx = await  mint.mintFunctions[choice](BOT, mint[choice]);
         if (tx === true) {
           logSuccess(standardMsg + `| Минт уже был совершен.`);
           msg = consoleTime() + " | " + standardMsg + `| Минт уже был совершен.\n`;
