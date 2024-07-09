@@ -153,6 +153,11 @@ const questions = [
         logInfo(standardMsg);
 
         //Ждем газ и выставляем параметры транзакции (gasPrice)
+        // BOT.tx_params["LINEA"].maxFeePerGas = 0;
+        // BOT.tx_params["LINEA"].maxPriorityFeePerGas = 0;
+
+        // Txn Type: 0 (Legacy) Rabby Wallet
+        BOT.tx_params["LINEA"].type = 0;
         await waitGwei(BOT, "LINEA");
 
         let msg = ``;
