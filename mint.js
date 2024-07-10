@@ -10,7 +10,8 @@ exports.mint = {
   4: {name: `W1: Wizards of Linea`, mint: `0xD540038B0B427238984E0341bA49F69CD80DC139`, NFT: `0xD540038B0B427238984E0341bA49F69CD80DC139`, ended: true}, // wizards
   5: {name: `W1: eFrogs`, mint: `0xf4AA97cDE2686Bc5ae2Ee934a8E5330B8B13Be64`, NFT: `0xf4aa97cde2686bc5ae2ee934a8e5330b8b13be64`, ended: true}, // frogs
   6: {name: `W2: Satoshi Universe`, mint: `0xc0A2a606913A49a0B0a02F682C833EFF3829B4bA`, NFT: `0xc0A2a606913A49a0B0a02F682C833EFF3829B4bA`, ended: true}, // Satoshi Universe
-  7: {name: `W2: Linus`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xfca530bc063c2e1eb1d399a7a43f8991544b57bf`, ended: false}, // Linus 
+  7: {name: `W2: Linus`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xfca530bc063c2e1eb1d399a7a43f8991544b57bf`, ended: true}, // Linus 
+  8: {name: `W2: Yooldo`, mint: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, NFT: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, ended: false}, // yooldo 
 
   mintFunctions: {
     name: `Выберите минт`,
@@ -22,6 +23,7 @@ exports.mint = {
     5: false,
     6: mintNFTS2ME,
     7: elementLinusEggs,
+    8: yooldoMint,
   }
 } 
 
@@ -30,6 +32,32 @@ exports.mint = {
 
 /* ========================================================================= */
 // Минты
+
+// W2: Yooldo
+
+async function yooldoMint(BOT, choise){
+  let contractAddress = choise.mint;
+  const ABI = `["function mint()", {"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]`;
+  const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
+
+  const balanceOf = await contract.balanceOf(BOT.wallets["LINEA"].address);
+  // console.log("balanceOf", balanceOf);
+
+  if (balanceOf > 0) {
+    return true;
+  } else {
+    // Определяем сколько нужно газа на транзакцию
+    // console.log(BOT.tx_params["LINEA"])
+    const gasAmount = await contract["mint"].estimateGas(BOT.tx_params["LINEA"]);
+    BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
+    // console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
+    // return gasAmount
+    // console.log(BOT.tx_params["LINEA"]);
+    let tx = await contract["mint"](BOT.tx_params["LINEA"]);
+    return tx;
+  }
+}
+
 // W2: Linus 
 async function elementLinusEggs(BOT, choise) {
   let contractAddress = choise.mint;
