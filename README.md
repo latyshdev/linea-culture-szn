@@ -15,8 +15,7 @@ Node: https://nodejs.org/en/download/package-manager
     "cross-fetch": "^4.0.0",
     "ethers": "^6.8.1",
     "https-proxy-agent": "^7.0.1",
-    "inquirer": "^8.0.0",
-    "mongodb": "^4.17.1"
+    "inquirer": "^8.0.0"
 ```
 
 ## Запуск
