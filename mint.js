@@ -53,7 +53,7 @@ async function elementLinusEggs(BOT, choise) {
     let quanadditionaltity = [];
     let data = `0x`;
 
-    console.log(BOT.tx_params["LINEA"]);
+    // console.log(BOT.tx_params["LINEA"]);
 
     const gasAmount = await contract["launchpadBuy"].estimateGas(
       undefinedParam,
@@ -65,7 +65,7 @@ async function elementLinusEggs(BOT, choise) {
       BOT.tx_params["LINEA"]);
     
     BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
-    console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
+    // console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
     // return true;
 
     let tx = await contract.launchpadBuy(
