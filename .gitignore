@@ -1,7 +1,7 @@
 privates.txt
 proxy.txt
 *.txt
-/LOGS/*
+_LOGS/*
 config.json
 node_modules
 *.json
