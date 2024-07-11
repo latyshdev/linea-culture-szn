@@ -180,6 +180,7 @@ const questions = [
         fs.appendFileSync(`./_LOGS/logs.txt`, msg, `utf-8`);
         fs.appendFileSync(`./_LOGS/${BOT.wallets["LINEA"].address}.txt`, msg, `utf-8`);
        
+        // Если минт был совершен ранее, то пропускаем паузу
         if (tx === true) continue;
         // Пауза между кошельками
         let pauseSeconds = randomBetweenInt(
@@ -187,7 +188,11 @@ const questions = [
           CONFIG.PAUSE_BETWEEN_ACCOUNTS[1]
         );
         let pauseSecondsMs = pauseSeconds * SECOND;
-        logInfo(standardMsg + ` | Пауза ${pauseSecondsMs / SECOND} секунд`)
+        logInfo(standardMsg + ` | Пауза ${pauseSecondsMs / SECOND} секунд`);
+
+        // Если последний кошелек, то ждать не нужно
+        if (i+1 === privateKeys.length) continue;
+        // Пауза между кошельками
         await pause(pauseSecondsMs);
         
       } catch (err) {

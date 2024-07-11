@@ -4,26 +4,18 @@ const ethers = require('ethers');
 const {gasMultiplicate} = require('./ethers_helper');
 /* ========================================================================= */
 exports.mint = {
-  1: {name: `W1: OctoMos`, mint: ``, NFT: ``, ended: true},
-  2: {name: `W1: Push`, mint: ``, NFT: ``, ended: true},
-  3: {name: `W1: Crazy Gang`, mint: ``, NFT: ``, ended: true}, // crazy gang
-  4: {name: `W1: Wizards of Linea`, mint: `0xD540038B0B427238984E0341bA49F69CD80DC139`, NFT: `0xD540038B0B427238984E0341bA49F69CD80DC139`, ended: true}, // wizards
-  5: {name: `W1: eFrogs`, mint: `0xf4AA97cDE2686Bc5ae2Ee934a8E5330B8B13Be64`, NFT: `0xf4aa97cde2686bc5ae2ee934a8e5330b8b13be64`, ended: true}, // frogs
   6: {name: `W2: Satoshi Universe`, mint: `0xc0A2a606913A49a0B0a02F682C833EFF3829B4bA`, NFT: `0xc0A2a606913A49a0B0a02F682C833EFF3829B4bA`, ended: true}, // Satoshi Universe
   7: {name: `W2: Linus`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xfca530bc063c2e1eb1d399a7a43f8991544b57bf`, ended: true}, // Linus 
-  8: {name: `W2: Yooldo`, mint: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, NFT: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, ended: false}, // yooldo 
+  8: {name: `W2: Yooldo`, mint: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, NFT: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, ended: true}, // yooldo 
+  9: {name: `W2: Frog Wars`, mint: `0x32DeC694570ce8EE6AcA08598DaEeA7A3e0168A3`, NFT: `0x32DeC694570ce8EE6AcA08598DaEeA7A3e0168A3`, ended: false}, // frogwars 
 
   mintFunctions: {
     name: `Выберите минт`,
     value: false,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
     6: mintNFTS2ME,
     7: elementLinusEggs,
     8: yooldoMint,
+    9: mintNFTS2ME,
   }
 } 
 
