@@ -21,5 +21,15 @@ Node: https://nodejs.org/en/download/package-manager
 ## Запуск
 ```node index.js```
 
+## Рекомендованный конфиг
+```
+  "PAUSE_BETWEEN_ACCOUNTS": [300, 600],
+  "PAUSE_SEC_BETWEEN_TXN": [10, 15],
+  "SHUFFLE_PK": true,
+  "MAX_GWEI_PROJECT": 0.099,
+  "GAS_AMOUNT_MULTIPLICATOR": 1.5,
+  "MAX_GWEI_ETHEREUM": false,
+```
+
 ## Donate
 EVM: 0x99984bBFF08C169796E1B070CFfCb3795fAf9999
