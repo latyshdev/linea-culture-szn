@@ -31,5 +31,7 @@ Node: https://nodejs.org/en/download/package-manager
   "MAX_GWEI_ETHEREUM": false,
 ```
 
+https://t.me/sczmawo
+
 ## Donate
 EVM: 0x99984bBFF08C169796E1B070CFfCb3795fAf9999

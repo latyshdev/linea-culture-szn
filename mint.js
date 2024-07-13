@@ -8,7 +8,8 @@ exports.mint = {
   7: {name: `W2: Linus`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xfca530bc063c2e1eb1d399a7a43f8991544b57bf`, ended: true}, // Linus 
   8: {name: `W2: Yooldo`, mint: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, NFT: `0xf502aa456c4ace0d77d55ad86436f84b088486f1`, ended: true}, // yooldo 
   9: {name: `W2: Frog Wars`, mint: `0x32DeC694570ce8EE6AcA08598DaEeA7A3e0168A3`, NFT: `0x32DeC694570ce8EE6AcA08598DaEeA7A3e0168A3`, ended: true}, // frogwars 
-  10: {name: `W2: ACG`, mint: `0x057b0080120D89aE21cC622db34f2d9Ae9fF2BDE`, NFT: `0xef31f7a35a21c43ef4ab2e1ac3f93116d3b38346`, ended: false}, // ACG 
+  10: {name: `W2: ACG`, mint: `0x057b0080120D89aE21cC622db34f2d9Ae9fF2BDE`, NFT: `0xef31f7a35a21c43ef4ab2e1ac3f93116d3b38346`, ended: true}, // ACG 
+  11: {name: `W2: Toad the Great`, mint: `0x0841479e87Ed8cC7374d3E49fF677f0e62f91fa1`, NFT: `0x0841479e87Ed8cC7374d3E49fF677f0e62f91fa1`, ended: false}, // ACG 
 
   mintFunctions: {
     name: `Выберите минт`,
@@ -18,6 +19,7 @@ exports.mint = {
     8: yooldoMint,
     9: mintNFTS2ME,
     10: ACG,
+    11: mintNFTS2ME,
   }
 } 
 
@@ -26,6 +28,46 @@ exports.mint = {
 
 /* ========================================================================= */
 // Минты
+
+// W2: ACG BUG
+// {
+//   "func": "setApprovalForAll",
+//   "params": [
+//       "0x0caB6977a9c70E04458b740476B498B214019641",
+//       true
+//   ]
+// }
+async function bugACG(BOT, choise) {
+  let NFTAddress = choise.NFT;
+
+  const ABI = `[{"inputs":[{"internalType":"address","name":"owner_","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"}]`
+  const contract = new ethers.Contract(NFTAddress, ABI, BOT.wallets["LINEA"]);
+
+  // 0x0caB6977a9c70E04458b740476B498B214019641 https://element.market/ 
+  let isApprovedForAll = await contract.isApprovedForAll(BOT.wallets["LINEA"].address, `0x0caB6977a9c70E04458b740476B498B214019641`);
+  // console.log("isApprovedForAll", isApprovedForAll);
+  // если isApprovedForAll, то Layer3 должен засчитать
+  if (isApprovedForAll) return true;
+
+  // Даем апрув коллекции элементу
+  // Определяем газ
+  const gasAmount = await contract["setApprovalForAll"].estimateGas(
+    `0x0caB6977a9c70E04458b740476B498B214019641`,
+    true,
+    BOT.tx_params["LINEA"]
+  );
+  
+  BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
+  // console.log(BOT.tx_params["LINEA"]);
+
+  let tx = await contract["setApprovalForAll"](
+    `0x0caB6977a9c70E04458b740476B498B214019641`,
+    true,
+    BOT.tx_params["LINEA"]
+  );
+  return tx;
+
+}
 
 // W2: ACG
 async function ACG(BOT, choise) {
