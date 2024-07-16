@@ -164,8 +164,9 @@ async function waitGwei(BOT, PROJECT_NAME) {
       };
 
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       logError(`Ошибка при получении газа`);
+      BOT.errors[PROJECT_NAME]++;
       await pause(SECOND * 30);
     };
 

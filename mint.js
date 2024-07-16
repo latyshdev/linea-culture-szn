@@ -4,12 +4,14 @@ const ethers = require('ethers');
 const {gasMultiplicate} = require('./ethers_helper');
 /* ========================================================================= */
 exports.mint = {
-  12: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: false, launchpadId: `0x19a747c1`}, // Linus 
+  12: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: true, launchpadId: `0x19a747c1`}, // Linus 
+  13: {name: `W3: SendingMe`, mint: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, NFT: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, ended: false}, // SendingMe 
 
   mintFunctions: {
     name: `Выберите минт`,
     value: false,
     12: elementNFT,
+    13: samuel,
   }
 } 
 
@@ -18,6 +20,32 @@ exports.mint = {
 
 /* ========================================================================= */
 // Минты
+
+//W3: SendingMe
+async function samuel(BOT, choise) {
+  let contractAddress = choise.mint;
+
+  const ABI = `["function mint()", {"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]`;
+  const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
+  const balanceOf = await contract.balanceOf(BOT.wallets["LINEA"].address);
+  // console.log("balanceOf", balanceOf);
+  if (balanceOf > 0) {
+    return true;
+  } else {
+    // Определяем сколько нужно газа на транзакцию
+    // console.log(BOT.tx_params["LINEA"])
+
+    const gasAmount = await contract["mint"].estimateGas(BOT.tx_params["LINEA"]);
+    
+    BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
+    // console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
+    // return true;
+
+    let tx = await contract.mint(BOT.tx_params["LINEA"]);
+    return tx;
+  }
+}
+
 // elementNFT
 async function elementNFT(BOT, choise) {
   let contractAddress = choise.mint;

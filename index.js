@@ -140,7 +140,8 @@ const questions = [
       // Создаем кошелек
       BOT.wallets = {};
       BOT.wallets["LINEA"] = await getWallet(privateKeys[k], BOT.providers["LINEA"]);
-
+      BOT.errors = {};
+      BOT.errors["LINEA"] = 0;
       // console.log(BOT);
 
       // let balance = await getBalance(BOT, "LINEA");
@@ -158,7 +159,7 @@ const questions = [
 
         // Txn Type: 0 (Legacy) Rabby Wallet
         BOT.tx_params["LINEA"].type = 0;
-        await waitGwei(BOT, "LINEA");
+        await waitGwei(BOT, "LINEA"); //
 
         let msg = ``;
 
