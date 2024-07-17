@@ -250,6 +250,7 @@ const questions = [
         msg = consoleTime() + " | " + standardMsg + ` | ERROR: ${err.message}` + "\n";
         fs.appendFileSync(`./_LOGS/logs.txt`, msg, `utf-8`);
         fs.appendFileSync(`./_CONFIGS/fail.txt`, row + "\n", `utf-8`);
+        console.error(err);
       }
 
     };
