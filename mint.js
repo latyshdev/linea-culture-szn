@@ -1,15 +1,22 @@
 /* ========================================================================= */
 // 
 const ethers = require('ethers');
-const {gasMultiplicate} = require('./ethers_helper');
+const {gasMultiplicate, waitGwei} = require('./ethers_helper');
+const { logError } = require('./helper');
 /* ========================================================================= */
 exports.mint = {
   12: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: true, launchpadId: `0x19a747c1`}, // Linus 
   13: {name: `W3: SendingMe`, mint: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, NFT: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, ended: false}, // SendingMe 
+  
+  
+  the_base_era_begins: {name: `BASE: The Base Era Begins`, mint: `0x00005EA00Ac477B1030CE78506496e8C2dE24bf5`, NFT: `0x0852af8836a0fbf8dc7a3556b3dd46109d29d0fb`, ended: false}, // SendingMe 
+
+  // BASE 
 
   mintFunctions: {
     name: `Выберите минт`,
     value: false,
+    the_base_era_begins: the_base_era_begins,
     12: elementNFT,
     13: samuel,
   }
@@ -32,9 +39,13 @@ async function samuel(BOT, choise) {
   if (balanceOf > 0) {
     return true;
   } else {
-    // Определяем сколько нужно газа на транзакцию
-    // console.log(BOT.tx_params["LINEA"])
 
+    // Ждем газ
+    let gasIsNormal = await waitGwei(BOT, `LINEA`);
+    if (!gasIsNormal) return false;
+    // console.log(BOT.tx_params["LINEA"]);
+
+    // Определяем сколько нужно газа на транзакцию
     const gasAmount = await contract["mint"].estimateGas(BOT.tx_params["LINEA"]);
     
     BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
@@ -69,6 +80,10 @@ async function elementNFT(BOT, choise) {
     let quanadditionaltity = [];
     let data = `0x`;
 
+
+    // Ждем газ
+    let gasIsNormal = await waitGwei(BOT, `LINEA`);
+    if (!gasIsNormal) return false;
     // console.log(BOT.tx_params["LINEA"]);
 
     const gasAmount = await contract["launchpadBuy"].estimateGas(
@@ -111,6 +126,11 @@ async function mintNFTS2ME(BOT, choise){
   } else {
     // Определяем сколько нужно газа на транзакцию
     // console.log(BOT.tx_params["LINEA"])
+
+    // Ждем газ
+    let gasIsNormal = await waitGwei(BOT, `LINEA`);
+    if (!gasIsNormal) return false;
+
     const gasAmount = await contract["mintEfficientN2M_001Z5BWH"].estimateGas(BOT.tx_params["LINEA"]);
     BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
     // console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
@@ -119,3 +139,65 @@ async function mintNFTS2ME(BOT, choise){
     return tx;
   }
 };
+
+
+// The Base Era Begins 
+
+async function the_base_era_begins(BOT, choise) {
+
+  if (BOT.configs["LINEA"].RPC.toLowerCase().includes('linea')) {
+    logError(`Необходимо поменять RPC в конфиге`);
+    process.exit(0);
+    return false;
+  }
+
+  let contractAddress = choise.mint;
+  let NFTAddress = choise.NFT;
+
+  const ABI = `[{"internalType":"uint256","name":"quantity","type":"uint256"}],"name":"mintPublic","outputs":[],"stateMutability":"payable","type":"function"}]`;
+
+  const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
+  const contractNFT = new ethers.Contract(NFTAddress, [{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}], BOT.wallets["LINEA"]);
+
+  const balanceOf = await contractNFT.balanceOf(BOT.wallets["LINEA"].address);
+  console.log("balanceOf", balanceOf);
+  if (balanceOf > 0) {
+    return true;
+  } else {
+
+    // Ждем газ
+    let gasIsNormal = await waitGwei(BOT, `LINEA`);
+    if (!gasIsNormal) return false;
+
+    // mintPublic
+    // Определяем сколько нужно газа на транзакцию
+    // mintPublic(address nftContract,address feeRecipient,address minterIfNotPayer,uint256 quantity)
+    let nftContract = `0x0852af8836A0Fbf8dc7a3556B3Dd46109d29D0Fb`;
+    let feeRecipient = `0x0000a26b00c1F0DF003000390027140000fAa719`;
+    let minterIfNotPayer = `0x0000000000000000000000000000000000000000`;
+    let quantity = 1;
+
+
+    const gasAmount = await contract["mintPublic"].estimateGas(
+      nftContract,
+      feeRecipient,
+      minterIfNotPayer,
+      quantity,
+      BOT.tx_params["LINEA"]
+    );
+
+    BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
+    console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
+    console.log(BOT.tx_params["LINEA"]);
+    return true;
+    let tx = await contract["mintPublic"](
+      nftContract,
+      feeRecipient,
+      minterIfNotPayer,
+      quantity,
+      BOT.tx_params["LINEA"]
+    );
+    return tx;
+  }
+
+}

@@ -65,6 +65,9 @@ async function waitGwei(BOT, PROJECT_NAME) {
     // logInfo(`Аккаунтов в очереди: ${BOT.queue[PROJECT_NAME]}`);
     process.stdout.write('\r');  // needs return '/r'
     await pause(SECOND * 3);
+
+    if (BOT.errors[PROJECT_NAME] > BOT.configs[PROJECT_NAME].MAX_ERRORS) return false;
+
     try {
 
       // Если нам нужно следить за Ethereum Gwei
@@ -165,7 +168,8 @@ async function waitGwei(BOT, PROJECT_NAME) {
 
     } catch (err) {
       // console.error(err);
-      logError(`Ошибка при получении газа`);
+      logError(`Ошибка при получении газа: ${err.message}`);
+      logWarn(`Ошибок: ${BOT.errors + 1} / ${BOT.configs[PROJECT_NAME].MAX_ERRORS}`);
       BOT.errors[PROJECT_NAME]++;
       await pause(SECOND * 30);
     };

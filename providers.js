@@ -1,3 +1,5 @@
+const {pause, SECOND, logWarn, logError} = require('./helper');
+
 async function createProvider({RPC, proxy}) {
   // console.log("CreateProvider");
   const { JsonRpcProvider, FetchRequest } = require('ethers');
@@ -9,7 +11,8 @@ async function createProvider({RPC, proxy}) {
     let provider =  new JsonRpcProvider(RPC);
     return provider;
   }catch(err){
-    console.error(err);
+    logError(`createProvider | ERROR: ${err.message}`)
+    await pause(SECOND * 5)
     return false;
   }
 
