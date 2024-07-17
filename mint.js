@@ -5,8 +5,9 @@ const {gasMultiplicate, waitGwei} = require('./ethers_helper');
 const { logError } = require('./helper');
 /* ========================================================================= */
 exports.mint = {
-  12: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: true, launchpadId: `0x19a747c1`}, // Linus 
-  13: {name: `W3: SendingMe`, mint: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, NFT: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, ended: false}, // SendingMe 
+  1: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: true, launchpadId: `0x19a747c1`}, // Linus 
+  2: {name: `W3: SendingMe`, mint: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, NFT: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, ended: true}, // SendingMe 
+  3: {name: `W3: Townstory`, mint: `0x8Ad15e54D37d7d35fCbD62c0f9dE4420e54Df403`, NFT: `0x8ad15e54d37d7d35fcbd62c0f9de4420e54df403`, ended: false}, // Townstory 
   
   
   the_base_era_begins: {name: `BASE: The Base Era Begins`, mint: `0x00005EA00Ac477B1030CE78506496e8C2dE24bf5`, NFT: `0x0852af8836a0fbf8dc7a3556b3dd46109d29d0fb`, ended: false}, // SendingMe 
@@ -17,8 +18,9 @@ exports.mint = {
     name: `Выберите минт`,
     value: false,
     the_base_era_begins: the_base_era_begins,
-    12: elementNFT,
-    13: samuel,
+    1: elementNFT,
+    2: samuel,
+    3: mintNFTS2ME,
   }
 } 
 
@@ -142,7 +144,6 @@ async function mintNFTS2ME(BOT, choise){
 
 
 // The Base Era Begins 
-
 async function the_base_era_begins(BOT, choise) {
 
   if (BOT.configs["LINEA"].RPC.toLowerCase().includes('linea')) {
