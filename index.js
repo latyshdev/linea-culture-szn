@@ -221,7 +221,7 @@ const questions = [
           // msg = consoleTime() + " | " + standardMsg + `| Транзакция в очереди | ${tx.hash}\n`;
           await tx.wait();
           logSuccess(standardMsg + `| ${tx.hash}`);
-          msg += consoleTime() + " | " + standardMsg + `| Транзакция готова | ${tx.hash}\n`;
+          msg += consoleTime() + " | " + standardMsg + `| Транзакция готова | ${CONFIG.EXPLORER}\\${tx.hash}\n`;
         }
 
         // Записываем логи и обновляем файлы
@@ -232,7 +232,8 @@ const questions = [
         if (tx === true) continue;
 
         // Если последний кошелек, то ждать не нужно
-        if (i+1 === unready.length) continue;
+        // console.log(i, i+1, i+1 === unready.length, unready.length);
+        if (i+1 === length) continue;
 
         // Пауза между кошельками
         let pauseSeconds = randomBetweenInt(

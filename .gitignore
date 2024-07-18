@@ -2,6 +2,7 @@ privates.txt
 proxy.txt
 *.txt
 _LOGS/*
+!_LOGS/.gitkeep
 config.json
 node_modules
 *.json
