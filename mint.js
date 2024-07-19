@@ -8,7 +8,8 @@ exports.mint = {
   1: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: true, launchpadId: `0x19a747c1`}, // Linus 
   2: {name: `W3: SendingMe`, mint: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, NFT: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, ended: true}, // SendingMe 
   3: {name: `W3: Townstory`, mint: `0x8Ad15e54D37d7d35fCbD62c0f9dE4420e54Df403`, NFT: `0x8ad15e54d37d7d35fcbd62c0f9de4420e54df403`, ended: true}, // Townstory 
-  4: {name: `W3: Danielle Zosavac`, mint: `0x3A21e152aC78f3055aA6b23693FB842dEFdE0213`, NFT: `0x3A21e152aC78f3055aA6b23693FB842dEFdE0213`, ended: false}, // DanielleZosavac 
+  4: {name: `W3: Danielle Zosavac`, mint: `0x3A21e152aC78f3055aA6b23693FB842dEFdE0213`, NFT: `0x3A21e152aC78f3055aA6b23693FB842dEFdE0213`, ended: true}, // DanielleZosavac 
+  5: {name: `W3: Demmortal Treasure`, mint: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, NFT: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, ended: false}, // W3: Demmortal Treasure
   
   
   // BASE 
@@ -20,6 +21,7 @@ exports.mint = {
     2: samuel,
     3: mintNFTS2ME,
     4: mintNFTS2ME,
+    5: mintPad,
   }
 } 
 
@@ -28,6 +30,45 @@ exports.mint = {
 
 /* ========================================================================= */
 // Минты
+
+//
+async function mintPad(BOT, choise){
+  let contractAddress = choise.mint;
+
+  const ABI = `[{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]`;
+  const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
+  const balanceOf = await contract.balanceOf(BOT.wallets["LINEA"].address, 0);
+  // console.log("balanceOf", balanceOf);
+  if (balanceOf > 0) {
+    return true;
+  } else {
+
+    // Ждем газ
+    let gasIsNormal = await waitGwei(BOT, `LINEA`);
+    if (!gasIsNormal) return false;
+    // console.log(BOT.tx_params["LINEA"]);
+
+    // Определяем сколько нужно газа на транзакцию
+    const gasAmount = await contract["mint"].estimateGas(
+      BOT.wallets["LINEA"].address,
+      0,
+      1,
+      `0x`,
+      BOT.tx_params["LINEA"]);
+    
+    BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
+    console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);
+    // return true;
+
+    let tx = await contract["mint"](
+      BOT.wallets["LINEA"].address,
+      0,
+      1,
+      `0x`,
+      BOT.tx_params["LINEA"]);
+    return tx;
+  }
+}
 
 //W3: SendingMe
 async function samuel(BOT, choise) {
