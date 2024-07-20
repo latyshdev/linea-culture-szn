@@ -9,7 +9,9 @@ exports.mint = {
   2: {name: `W3: SendingMe`, mint: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, NFT: `0xeaea2fa0dea2d1191a584cfbb227220822e29086`, ended: true}, // SendingMe 
   3: {name: `W3: Townstory`, mint: `0x8Ad15e54D37d7d35fCbD62c0f9dE4420e54Df403`, NFT: `0x8ad15e54d37d7d35fcbd62c0f9de4420e54df403`, ended: true}, // Townstory 
   4: {name: `W3: Danielle Zosavac`, mint: `0x3A21e152aC78f3055aA6b23693FB842dEFdE0213`, NFT: `0x3A21e152aC78f3055aA6b23693FB842dEFdE0213`, ended: true}, // DanielleZosavac 
-  5: {name: `W3: Demmortal Treasure`, mint: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, NFT: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, ended: false}, // W3: Demmortal Treasure
+  5: {name: `W3: Demmortal Treasure`, mint: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, NFT: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, ended: true}, // W3: Demmortal Treasure
+  6: {name: `W3: Foxy`, mint: `0xBcFa22a36E555c507092FF16c1af4cB74B8514C8`, NFT: `0x56223a633b78dccf6926c4734b2447a4b2018cce`, ended: false, launchpadId: `0x2968bd75`}, // W3: Foxy
+
   
   
   // BASE 
@@ -22,6 +24,7 @@ exports.mint = {
     3: mintNFTS2ME,
     4: mintNFTS2ME,
     5: mintPad,
+    6: elementNFT,
   }
 } 
 
