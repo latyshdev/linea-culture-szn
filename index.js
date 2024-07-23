@@ -172,16 +172,20 @@ const questions = [
       // Создаем провайдера
       BOT.providers = {};
 
+      BOT.proxy = evaluateProxy(proxy, CONFIG.PROXY_TYPE);
+      // console.log(BOT.proxy);
+      // return;
+
       BOT.providers["LINEA"] = await createProvider({
         RPC: CONFIG.RPC,
-        proxy: evaluateProxy(proxy, CONFIG.PROXY_TYPE)
+        proxy: BOT.proxy
       });
 
       // Создаем провайдера ETHEREUM
       if (CONFIG.MAX_GWEI_ETHEREUM) {
         BOT.providers["ETHEREUM"] = await createProvider({
           RPC: CONFIG.RPC_ETHEREUM,
-          proxy: evaluateProxy(proxy, CONFIG.PROXY_TYPE)
+          proxy: BOT.proxy
         });
       };
 
@@ -212,16 +216,24 @@ const questions = [
 
         // Делаем минт
         let tx = await  mint.mintFunctions[choice](BOT, mint[choice]);
+
         if (tx === true) {
           logSuccess(standardMsg + `| Минт уже был совершен.`);
           msg = consoleTime() + " | " + standardMsg + `| Минт уже был совершен.\n`;
         }
         else {
-          logWarn(standardMsg + `| ${tx.hash}`);
-          // msg = consoleTime() + " | " + standardMsg + `| Транзакция в очереди | ${tx.hash}\n`;
-          await tx.wait();
-          logSuccess(standardMsg + `| ${tx.hash}`);
-          msg += consoleTime() + " | " + standardMsg + `| Транзакция готова | ${CONFIG.EXPLORER}\\${tx.hash}\n`;
+
+          if (tx === false) {
+            logError(standardMsg + `| Не смогли заминтить`);
+            msg += consoleTime() + " | " + standardMsg + `| Не смогли заминтить\n`
+          } else {
+            logWarn(standardMsg + `| ${tx.hash}`);
+            // msg = consoleTime() + " | " + standardMsg + `| Транзакция в очереди | ${tx.hash}\n`;
+            await tx.wait();
+            logSuccess(standardMsg + `| ${tx.hash}`);
+            msg += consoleTime() + " | " + standardMsg + `| Транзакция готова | ${CONFIG.EXPLORER}\\${tx.hash}\n`;
+          }
+
         }
 
         // Записываем логи и обновляем файлы
@@ -230,6 +242,8 @@ const questions = [
        
         // Если минт был совершен ранее, то пропускаем паузу
         if (tx === true) continue;
+        if (tx === false) continue;
+
 
         // Если последний кошелек, то ждать не нужно
         // console.log(i, i+1, i+1 === unready.length, unready.length);
