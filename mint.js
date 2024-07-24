@@ -1,7 +1,7 @@
 /* ========================================================================= */
 const ethers = require('ethers');
 const {gasMultiplicate, waitGwei} = require('./ethers_helper');
-const { logError, pause, SECOND } = require('./helper');
+const { logError, pause, SECOND, logInfo } = require('./helper');
 /* ========================================================================= */
 exports.mint = {
   1: {name: `W3: AscendTheEnd`, mint: `0xbcfa22a36e555c507092ff16c1af4cb74b8514c8`, NFT: `0xc83ccbd072b0cc3865dbd4bc6c3d686bb0b85915`, ended: true, launchpadId: `0x19a747c1`}, // Linus 
@@ -133,6 +133,7 @@ async function phosphor(BOT, choice) {
   const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
   const balanceOf = await contract.balanceOf(BOT.wallets["LINEA"].address, choice.token_id);
   // console.log(balanceOf);
+  logInfo(`У нас этих NFT: ${balanceOf.toString()}`);
 
   if (balanceOf > 0) return true;
 
@@ -148,11 +149,11 @@ async function phosphor(BOT, choice) {
       response.data.data &&
       response.data?.data?.voucher?.expiry &&
       response?.data?.data?.signature;
-    console.log(response.status);
-    console.log(response.data.data);
+    // console.log(response.status);
+    // console.log(response.data.data);
 
-    console.log(response.data?.data?.voucher?.expiry);
-    console.log(response?.data?.data?.signature);
+    // console.log(response.data?.data?.voucher?.expiry);
+    // console.log(response?.data?.data?.signature);
 
     if (!dataIsValid) {
       logError(`Не смогли получить данные для минта на phosphor`);
@@ -203,7 +204,7 @@ async function phosphor(BOT, choice) {
       });
     
     BOT.tx_params["LINEA"].gasLimit = gasMultiplicate(gasAmount, BOT.configs["LINEA"].GAS_AMOUNT_MULTIPLICATOR);
-    console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);      
+    // console.log(gasAmount, BOT.tx_params["LINEA"].gasLimit);      
     // return true;
     let tx = await contract["mintWithVoucher"](
       [
