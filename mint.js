@@ -11,8 +11,10 @@ exports.mint = {
   5: {name: `W3: Demmortal Treasure`, mint: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, NFT: `0x5A77B45B6f5309b07110fe98E25A178eEe7516c1`, ended: true}, // W3: Demmortal Treasure
   6: {name: `W3: Foxy`, mint: `0xBcFa22a36E555c507092FF16c1af4cB74B8514C8`, NFT: `0x56223a633b78dccf6926c4734b2447a4b2018cce`, ended: true, launchpadId: `0x2968bd75`}, // W3: Foxy
 
-  7: {name: `W4: Coop Records`, ended: true,}, // W3: Foxy
-  8: {name: `W4: Borja Moskv`, mint: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, NFT: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, ended: false, phosphor_id: `849e42a7-45dd-4a5b-a895-f5496e46ade2`}, // W3: Foxy
+  7: {name: `W4: Coop Records`, ended: true,}, // W3: Coop Records
+  8: {name: `W4: Borja Moskv`, mint: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, NFT: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, ended: true, phosphor_id: `849e42a7-45dd-4a5b-a895-f5496e46ade2`, token_id: 1}, // W3: Borja Moskv
+  9: {name: `W4: Forbidden Fruit - JT`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: false, phosphor_id: `3d595f3e-6609-405f-ba3c-d1e28381f11a`, token_id: 3}, // W4: Forbidden Fruit - JT
+
 
   
   
@@ -29,6 +31,7 @@ exports.mint = {
     6: elementNFT,
     7: phosphor,
     8: phosphor,
+    9: phosphor,
   }
 } 
 
@@ -128,7 +131,7 @@ async function phosphor(BOT, choice) {
   let contractAddress = choice.mint;
   const ABI = `[{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}, {"inputs":[{"components":[{"internalType":"address","name":"netRecipient","type":"address"},{"internalType":"address","name":"initialRecipient","type":"address"},{"internalType":"uint256","name":"initialRecipientAmount","type":"uint256"},{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"price","type":"uint256"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"currency","type":"address"}],"internalType":"struct MintVoucherVerification.MintVoucher","name":"voucher","type":"tuple"},{"internalType":"bytes","name":"signature","type":"bytes"}],"name":"mintWithVoucher","outputs":[],"stateMutability":"payable","type":"function"}]`;
   const contract = new ethers.Contract(contractAddress, ABI, BOT.wallets["LINEA"]);
-  const balanceOf = await contract.balanceOf(BOT.wallets["LINEA"].address, 0);
+  const balanceOf = await contract.balanceOf(BOT.wallets["LINEA"].address, choice.token_id);
   // console.log(balanceOf);
 
   if (balanceOf > 0) return true;
@@ -145,11 +148,11 @@ async function phosphor(BOT, choice) {
       response.data.data &&
       response.data?.data?.voucher?.expiry &&
       response?.data?.data?.signature;
-    // console.log(response.status);
-    // console.log(response.data.data);
+    console.log(response.status);
+    console.log(response.data.data);
 
-    // console.log(response.data?.data?.voucher?.expiry);
-    // console.log(response?.data?.data?.signature);
+    console.log(response.data?.data?.voucher?.expiry);
+    console.log(response?.data?.data?.signature);
 
     if (!dataIsValid) {
       logError(`Не смогли получить данные для минта на phosphor`);
