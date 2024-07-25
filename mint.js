@@ -14,7 +14,7 @@ exports.mint = {
   7: {name: `W4: Coop Records`, ended: true,}, // W3: Coop Records
   8: {name: `W4: Borja Moskv`, mint: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, NFT: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, ended: true, phosphor_id: `849e42a7-45dd-4a5b-a895-f5496e46ade2`, token_id: 1}, // W3: Borja Moskv
   9: {name: `W4: Forbidden Fruit - JT`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: true, phosphor_id: `3d595f3e-6609-405f-ba3c-d1e28381f11a`, token_id: 3}, // W4: Forbidden Fruit - JT
-  10: {name: `W4: Forbidden Fruit - Crux`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: false, phosphor_id: `d3542d49-273c-4f2d-9d33-8904c773ed14`, token_id: 1}, // W4: Forbidden Fruit - JT
+  10: {name: `W4: Forbidden Fruit - Crux`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: false, phosphor_id: `d3542d49-273c-4f2d-9d33-8904c773ed14`, token_id: 1, nonce: 2}, // W4: Forbidden Fruit - JT
 
 
   
@@ -150,7 +150,8 @@ async function phosphor(BOT, choice) {
       response.data &&
       response.data.data &&
       response.data?.data?.voucher?.expiry &&
-      response?.data?.data?.signature;
+      response?.data?.data?.signature
+      parseInt(response.data?.data?.voucher?.nonce) === choice.nonce;
     // console.log(response.status);
     // console.log(response.data.data);
 
