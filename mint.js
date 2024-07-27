@@ -15,7 +15,8 @@ exports.mint = {
   8: {name: `W4: Borja Moskv`, mint: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, NFT: `0x3f0A935c8f3Eb7F9112b54bD3b7fd19237E441Ee`, ended: true, phosphor_id: `849e42a7-45dd-4a5b-a895-f5496e46ade2`, token_id: 1}, // W3: Borja Moskv
   9: {name: `W4: Forbidden Fruit - JT`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: true, phosphor_id: `3d595f3e-6609-405f-ba3c-d1e28381f11a`, token_id: 3}, // W4: Forbidden Fruit - JT
   10: {name: `W4: Forbidden Fruit - Crux`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: true, phosphor_id: `d3542d49-273c-4f2d-9d33-8904c773ed14`, token_id: 1, nonce: 2}, // W4: Forbidden Fruit - JT
-  11: {name: `W4: Forbidden Fruit - Stonez the Organic`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: false, phosphor_id: `3c23e064-486d-46c5-8675-eabbc2e7d15e`, token_id: 2, nonce: 4}, // W4: Forbidden Fruit - Stonez the Organic
+  11: {name: `W4: Forbidden Fruit - Stonez the Organic`, mint: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, NFT: `0x3EB78e881b28B71329344dF622Ea3A682538EC6a`, ended: true, phosphor_id: `3c23e064-486d-46c5-8675-eabbc2e7d15e`, token_id: 2, nonce: 4}, // W4: Forbidden Fruit - Stonez the Organic
+  12: {name: `W4: Adélaïde Laurent-Bellue`, mint: `0x8975e0635586C6754C8D549Db0e3C7Ee807D9C8C`, NFT: `0x8975e0635586C6754C8D549Db0e3C7Ee807D9C8C`, ended: false, phosphor_id: `86a8741b-28dd-42ca-9f2f-dfb173a62099`, token_id: 1, nonce: 1}, // W4: Forbidden Fruit - Stonez the Organic
 
 
   
@@ -36,6 +37,7 @@ exports.mint = {
     9: phosphor,
     10: phosphor,
     11: phosphor,
+    12: phosphor
   }
 } 
 
@@ -90,6 +92,7 @@ async function getPhosphorData(BOT, id) {
   const dataHeaders = {
     'Accept': '*/*',
     'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding':'gzip, deflate, br, zstd',
     'Content-Type': 'application/json',
     'Origin': 'https://app.phosphor.xyz',
     'Priority': 'u=1, i',
@@ -107,7 +110,10 @@ async function getPhosphorData(BOT, id) {
     method: 'GET',
     url: `https://api.ipify.org?format=json`,
     httpsAgent: agent,
-  }).catch(err => false);
+  }).catch(err => {
+    console.log(err.message);
+    return false;
+  });
 
   // if (IP && IP.data && IP.data.ip) console.log("IP:", IP.data.ip);
 
@@ -155,10 +161,10 @@ async function phosphor(BOT, choice) {
       response.data?.data?.voucher?.expiry &&
       response?.data?.data?.signature
       parseInt(response.data?.data?.voucher?.nonce) === choice.nonce;
-    // console.log(response.status);
-    // console.log(response.data.data);
+    // console.log(response?.status);
+    // console.log(response?.data?.data);
 
-    // console.log(response.data?.data?.voucher?.expiry);
+    // console.log(response?.data?.data?.voucher?.expiry);
     // console.log(response?.data?.data?.signature);
 
     if (!dataIsValid) {
